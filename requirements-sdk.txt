@@ -1,0 +1,13 @@
+# Официальный Python SDK Т-Инвестиций.
+#
+# Пакет tinkoff-investments на PyPI с марта 2025 помечен как quarantined,
+# актуальный SDK (t-tech-investments, импорт t_tech.invest) живёт в реестре
+# Т-Банка. Сертификат реестра выпущен «Russian Trusted Sub CA» (Минцифры) и не
+# входит в стандартный набор корневых сертификатов, поэтому pip не может его
+# проверить — разрешаем небезопасное соединение только для этого хоста.
+# Более строгий вариант: установить корневой сертификат Минцифры в систему
+# (см. раздел «Ограничения и важные заметки» в README).
+--extra-index-url https://opensource.tbank.ru/api/v4/projects/238/packages/pypi/simple
+--trusted-host opensource.tbank.ru
+
+t-tech-investments>=0.3.5,<0.5

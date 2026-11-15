@@ -1,0 +1,66 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tinvest-deepseek-assistant"
+version = "0.1.0"
+description = "AI-ассистент по портфелю Т-Инвестиций: DeepSeek Function Calling + T-Invest API (read-only)"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "T-Invest × DeepSeek demo" }]
+keywords = ["tinkoff", "t-invest", "invest-api", "deepseek", "function-calling", "llm", "moex"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "License :: OSI Approved :: MIT License",
+    "Topic :: Office/Business :: Financial :: Investment",
+]
+dependencies = [
+    "t-tech-investments>=0.3.5,<0.5",
+    "openai>=1.40,<3",
+    "python-dotenv>=1.0,<2",
+    "rich>=13.7,<15",
+]
+
+[project.optional-dependencies]
+web = ["streamlit>=1.36,<2"]
+dev = ["pytest>=8.0", "pytest-cov>=5.0", "ruff>=0.6"]
+
+[project.scripts]
+tinvest-ai = "tinvest_ai.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/your-username/tinvest-deepseek-assistant"
+Issues = "https://github.com/your-username/tinvest-deepseek-assistant/issues"
+
+[tool.setuptools]
+packages = ["tinvest_ai"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra"
+filterwarnings = ["ignore::DeprecationWarning"]
+
+[tool.coverage.run]
+source = ["tinvest_ai"]
+omit = ["tinvest_ai/webapp.py"]
+
+[tool.ruff]
+line-length = 110
+target-version = "py310"
+exclude = [".venv", "build", "dist"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "C4", "SIM"]
+ignore = [
+    "E501",   # длина строк контролируется форматтером
+    "B008",   # вызовы в дефолтных значениях (dataclass field) — осознанно
+    "SIM108", # тернарники не всегда читаемее
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["B011", "SIM117"]

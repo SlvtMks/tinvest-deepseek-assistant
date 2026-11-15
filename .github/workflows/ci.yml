@@ -1,0 +1,36 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.10", "3.12"]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+
+      - name: Установка зависимостей
+        # requirements.txt тянет SDK Т-Инвестиций из реестра Т-Банка;
+        # если реестр недоступен — ставим минимальный набор (тесты работают на моках).
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt || pip install pytest ruff rich python-dotenv streamlit openai
+
+      - name: Тесты
+        run: pytest -q
+
+      - name: Линтер
+        run: ruff check .

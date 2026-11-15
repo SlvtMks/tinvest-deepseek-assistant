@@ -1,0 +1,21 @@
+# Не тащим в образ лишнее: образ собирается из кода и requirements.
+.git
+.github
+.venv
+venv
+__pycache__
+*.pyc
+.pytest_cache
+.ruff_cache
+.mypy_cache
+.env
+.env.*
+!.env.example
+docs
+tests
+*.md
+!README.md
+Dockerfile
+.dockerignore
+Makefile
+Procfile
