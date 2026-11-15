@@ -1,3 +1,4 @@
+
 name: CI
 
 on:
@@ -22,15 +23,20 @@ jobs:
           python-version: ${{ matrix.python-version }}
           cache: pip
 
-      - name: Установка зависимостей
-        # requirements.txt тянет SDK Т-Инвестиций из реестра Т-Банка;
-        # если реестр недоступен — ставим минимальный набор (тесты работают на моках).
+      - name: Обновление pip
+        run: python -m pip install --upgrade pip
+
+      - name: Установка инструментов тестирования
+        run: python -m pip install pytest ruff
+
+      - name: Установка зависимостей проекта
+        # Если SDK Т-Инвестиций недоступен, используем минимальный набор.
         run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt || pip install pytest ruff rich python-dotenv streamlit openai
+          python -m pip install -r requirements.txt || \
+          python -m pip install rich python-dotenv streamlit openai
 
       - name: Тесты
-        run: pytest -q
+        run: python -m pytest -q
 
       - name: Линтер
-        run: ruff check .
+        run: python -m ruff check .
